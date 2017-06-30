@@ -1,9 +1,9 @@
 /*! =======================================================
-                      VERSION  9.4.0              
+                      VERSION  9.5.0              
 ========================================================= */
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 /*! =========================================================
  * bootstrap-slider.js
@@ -18,17 +18,30 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  *
  * =========================================================
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * bootstrap-slider is released under the MIT License
+ * Copyright (c) 2016 Kyle Kemp, Rohit Kalkur, and contributors
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  * ========================================================= */
 
 /**
@@ -310,7 +323,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 		/*************************************************
   						CONSTRUCTOR
   	**************************************************/
-		Slider = function Slider(element, options) {
+		Slider = function (element, options) {
 			createNewSlider.call(this, element, options);
 			return this;
 		};
@@ -1110,9 +1123,15 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 				this.handle1.style[this.stylePos] = positionPercentages[0] + '%';
 				this.handle1.setAttribute('aria-valuenow', this._state.value[0]);
+				if (isNaN(this.options.formatter(this._state.value[0]))) {
+					this.handle1.setAttribute('aria-valuetext', this.options.formatter(this._state.value[0]));
+				}
 
 				this.handle2.style[this.stylePos] = positionPercentages[1] + '%';
 				this.handle2.setAttribute('aria-valuenow', this._state.value[1]);
+				if (isNaN(this.options.formatter(this._state.value[1]))) {
+					this.handle2.setAttribute('aria-valuetext', this.options.formatter(this._state.value[1]));
+				}
 
 				/* Position highlight range elements */
 				if (this.rangeHighlightElements.length > 0 && Array.isArray(this.options.rangeHighlights) && this.options.rangeHighlights.length > 0) {
@@ -1746,20 +1765,20 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				if (this.options.orientation === 'vertical') {
 					var tooltipPos = this.options.tooltip_position || 'right';
 					var oppositeSide = tooltipPos === 'left' ? 'right' : 'left';
-					tooltips.forEach(function (tooltip) {
+					tooltips.forEach((function (tooltip) {
 						this._addClass(tooltip, tooltipPos);
 						tooltip.style[oppositeSide] = '100%';
-					}.bind(this));
+					}).bind(this));
 				} else if (this.options.tooltip_position === 'bottom') {
-					tooltips.forEach(function (tooltip) {
+					tooltips.forEach((function (tooltip) {
 						this._addClass(tooltip, 'bottom');
 						tooltip.style.top = 22 + 'px';
-					}.bind(this));
+					}).bind(this));
 				} else {
-					tooltips.forEach(function (tooltip) {
+					tooltips.forEach((function (tooltip) {
 						this._addClass(tooltip, 'top');
 						tooltip.style.top = -this.tooltip.outerHeight - 14 + 'px';
-					}.bind(this));
+					}).bind(this));
 				}
 			}
 		};
@@ -1769,7 +1788,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
   	*********************************/
 		if ($) {
 			(function () {
-				var autoRegisterNamespace = void 0;
+				var autoRegisterNamespace = undefined;
 
 				if (!$.fn.slider) {
 					$.bridget(NAMESPACE_MAIN, Slider);
